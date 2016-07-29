@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <random>
+#include <chrono>
 
 namespace MTGSims {
 
@@ -15,12 +16,15 @@ void ZoneClass::initialize(const CardList& initialize_with) {
 	clear();
 	zone_counts_ = initialize_with;
 	for(auto entry : zone_counts_) {
-		ordered_zone_.push_back(entry.first);
+		for(size_t i = 0; i < entry.second; ++i) {
+			ordered_zone_.push_back(entry.first);
+		}
 	}
 }
 
 void ZoneClass::randomize() {
-	auto engine = std::default_random_engine{};
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	auto engine = std::default_random_engine{seed};
 	std::shuffle(std::begin(ordered_zone_), std::end(ordered_zone_), engine);
 }
 
