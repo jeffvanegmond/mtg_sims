@@ -4,6 +4,7 @@
 #include <map>
 #include <deque>
 #include <ostream>
+#include <random>
 
 namespace MTGSims {
 
@@ -13,6 +14,7 @@ class ZoneClass {
 private:
 	CardList zone_counts_;
 	std::deque<Card> ordered_zone_;
+	std::default_random_engine engine_;
 
 public:
 	ZoneClass() {}

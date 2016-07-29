@@ -10,6 +10,8 @@ namespace MTGSims {
 void ZoneClass::clear() {
 	zone_counts_.clear();
 	ordered_zone_.clear();
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	engine_ = std::default_random_engine{seed};
 }
 
 void ZoneClass::initialize(const CardList& initialize_with) {
@@ -23,9 +25,7 @@ void ZoneClass::initialize(const CardList& initialize_with) {
 }
 
 void ZoneClass::randomize() {
-	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-	auto engine = std::default_random_engine{seed};
-	std::shuffle(std::begin(ordered_zone_), std::end(ordered_zone_), engine);
+	std::shuffle(std::begin(ordered_zone_), std::end(ordered_zone_), engine_);
 }
 
 Card ZoneClass::takeTopCard() {
