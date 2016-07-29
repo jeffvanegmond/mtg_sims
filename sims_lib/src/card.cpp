@@ -4,9 +4,10 @@
 namespace MTGSims {
 
 size_t Card::id_counter_ = 0;
+std::map<std::string, size_t> Card::id_map_ = {};
 
 Card::Card(std::string name) : name_(name) {
-	if(Card::id_map_.find(name) == id_map_.end() ){
+	if(Card::id_map_.find(name) == Card::id_map_.end() ){
 		id_ = Card::id_counter_++;
 		Card::id_map_[name] = id_;
 	}
