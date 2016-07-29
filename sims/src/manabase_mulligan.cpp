@@ -55,19 +55,24 @@ public:
 
 int main(int argc, char** argv) {
 	Deck deck{"Manabase checkup"};
-	Card red_source = deck.addCard("Red source", 14);
-	Card other_land = deck.addCard("Other land", 10);
 	deck.addCard("Some random other card", 36);
+	Card red_source{"Red source"};
+	Card other_land{"Other land"};
+	for(size_t red_sources = 10; red_sources < 18; ++red_sources) {
+		deck.setCardCount(red_source, red_sources);
+		deck.setCardCount(other_land, 24 - red_sources);
 
-	ManabaseMull manabase_mull{red_source, other_land};
+		ManabaseMull manabase_mull{red_source, other_land};
 
-	size_t num_sims = 100000;
-	Simulation sim{num_sims, deck};
-	sim.simulate<ManabaseMull>(manabase_mull);
+		size_t num_sims = 100000;
+		Simulation sim{num_sims, deck};
+		sim.simulate<ManabaseMull>(manabase_mull);
 
-	std::cout << "Seven cards kept: " << manabase_mull.keep_7 << "\t(" << double(manabase_mull.keep_7) / num_sims << "%)\n";
-	std::cout << "Six cards kept:   " << manabase_mull.keep_6 << "\t(" << double(manabase_mull.keep_6) / num_sims << "%)\n";
-	std::cout << "Five cards kept:  " << manabase_mull.keep_5 << "\t(" << double(manabase_mull.keep_5) / num_sims << "%)\n";
-	std::cout << "Four cards kept:  " << manabase_mull.keep_4 << "\t(" << double(manabase_mull.keep_4) / num_sims << "%)\n";
+		std::cout << "Seven cards kept: " << manabase_mull.keep_7 << "\t(" << double(manabase_mull.keep_7) / num_sims << "%)\n";
+		std::cout << "Six cards kept:   " << manabase_mull.keep_6 << "\t(" << double(manabase_mull.keep_6) / num_sims << "%)\n";
+		std::cout << "Five cards kept:  " << manabase_mull.keep_5 << "\t(" << double(manabase_mull.keep_5) / num_sims << "%)\n";
+		std::cout << "Four cards kept:  " << manabase_mull.keep_4 << "\t(" << double(manabase_mull.keep_4) / num_sims << "%)\n";
+	}
+
 	return 0;
 }
