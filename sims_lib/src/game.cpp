@@ -43,7 +43,7 @@ void Game::reset(size_t cards) {
 		drawCard();
 	}
 
-	turn_ = 0;
+	turn_ = 1;
 }
 
 void Game::mulligan() {
