@@ -22,6 +22,10 @@ Card Deck::addCard(const std::string& name, size_t count) {
 	return card;
 }
 
+void Deck::setCardCount(const Card& card, size_t count) {
+	decklist_[card] = count;
+}
+
 CardList Deck::getDecklist() {
 	return decklist_;
 }

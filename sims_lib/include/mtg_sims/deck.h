@@ -22,6 +22,9 @@ public:
 	void addCard(const Card& card, size_t count = 1);
 	Card addCard(const std::string& name, size_t count = 1);
 
+	// Adaptation functions
+	void setCardCount(const Card& card, size_t count);
+
 	// Access function
 	CardList getDecklist();
 
