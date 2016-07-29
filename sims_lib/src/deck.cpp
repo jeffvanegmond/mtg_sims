@@ -32,10 +32,12 @@ CardList Deck::getDecklist() {
 
 std::ostream& operator<<(std::ostream& out, const Deck& deck) {
 	out << "Decklist for deck: " << deck.name_ << "\n";
+	size_t total_cards = 0;
 	for(auto entry : deck.decklist_) {
 		out << entry.first << ": " << entry.second << "\n";
+		total_cards += entry.second;
 	}
-	return out;
+	return out << "Total cards: " << total_cards << "\n";
 }
 
 }

@@ -18,9 +18,11 @@ public:
 	Simulation(size_t iterations, Deck deck);
 
 	template<typename T>
-	void simulate(T& behavior) {
+	void simulate(T& behavior, bool show_deck = true) {
 		std::cout << "Simulation starting with " << iterations_ << " iterations.\n";
-		std::cout << "Using the following deck.\n" << deck_;
+		if(show_deck) {
+			std::cout << deck_;
+		}
 		Timer timer;
 		#pragma omp parallel for
 		for(size_t i = 0; i < iterations_; ++i) {
