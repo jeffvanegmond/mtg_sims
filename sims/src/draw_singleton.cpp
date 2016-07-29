@@ -3,35 +3,37 @@
 #include "mtg_sims/zone.h"
 #include "mtg_sims/card.h"
 #include "mtg_sims/timer.h"
+#include "mtg_sims/sim.h"
 
 #include <iostream>
 
 using namespace MTGSims;
 
-int main(int argc, char** argv) {
-	Timer timer;
-
-	Deck deck{"Just a deck"};
-	Card target_card = deck.addCard("Find this one");
-	Card other_card  = deck.addCard("Some random other card", 59);
-
-	std::cout << deck;
-
-	Game game{deck};
-	int num_sims = 1000000;
-	int cumulative_turns_to_find = 0;
-	for(int i = 0; i < num_sims; ++i) {
-		game.reset();
-		while(!game.zoneContains(Zone::Hand, target_card)) {
+class DrawSingleton {
+public:
+	DrawSingleton(Card target_card) : target(target_card) {}
+	Card target;
+	int cumulative_turns = 0;
+	void execute(Game& game) {
+		while(!game.zoneContains(Zone::Hand, target)) {
 			game.nextTurn();
 		}
-		cumulative_turns_to_find += game.getTurn();
+		cumulative_turns += game.getTurn();
 	}
+};
 
-	double average_turn = double(cumulative_turns_to_find) / double(num_sims);
+int main(int argc, char** argv) {
+	Deck deck{"Just a deck"};
+	Card target = deck.addCard("Find this one");
+	deck.addCard("Some random other card", 59);
 
+	DrawSingleton draw_singleton{target};
+
+	size_t num_sims = 100000;
+	Simulation sim{num_sims, deck};
+	sim.simulate<DrawSingleton>(draw_singleton);
+	double average_turn = double(draw_singleton.cumulative_turns) / double(num_sims);
 	std::cout << "Average number of turns to draw your one off: " << average_turn << "\n";
-	std::cout << "It took " << timer.elapsed() << " seconds to find this out with " << num_sims << " simulations." << std::endl;
 
 	return 0;
 }
