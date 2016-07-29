@@ -1,9 +1,4 @@
-#include "mtg_sims/game.h"
-#include "mtg_sims/deck.h"
-#include "mtg_sims/zone.h"
-#include "mtg_sims/card.h"
-#include "mtg_sims/timer.h"
-#include "mtg_sims/sim.h"
+#include "mtg_sims/mtg_sims.h"
 
 #include <iostream>
 
@@ -32,6 +27,7 @@ int main(int argc, char** argv) {
 	size_t num_sims = 100000;
 	Simulation sim{num_sims, deck};
 	sim.simulate<DrawSingleton>(draw_singleton);
+
 	double average_turn = double(draw_singleton.cumulative_turns) / double(num_sims);
 	std::cout << "Average number of turns to draw your one off: " << average_turn << "\n";
 
