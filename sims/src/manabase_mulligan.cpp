@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
 
 		size_t num_sims = 100000;
 		Simulation sim{num_sims, deck};
-		ManabaseMull::Result res = sim.simulate<ManabaseMull, ManabaseMull::Result>(manabase_mull);
+		ManabaseMull::Result res = sim.simulateParallel<ManabaseMull, ManabaseMull::Result>(manabase_mull);
 
 		std::cout << "Seven cards kept: " << res.keep_7 << "\t(" << double(res.keep_7) / num_sims << "%)\n";
 		std::cout << "Six cards kept:   " << res.keep_6 << "\t(" << double(res.keep_6) / num_sims << "%)\n";
