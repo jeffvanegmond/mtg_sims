@@ -16,8 +16,10 @@ private:
 	std::deque<Card> ordered_zone_;
 	std::default_random_engine engine_;
 
+	void reseedRandom();
+
 public:
-	ZoneClass() {}
+	ZoneClass();
 
 	// Initialization stuff
 	void clear();
