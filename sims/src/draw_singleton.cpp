@@ -17,7 +17,7 @@ public:
 	Card target;
 
 	Result execute(Game& game) {
-		while(!game.zoneContains(Zone::Hand, target)) {
+		while(!game.hand.contains(target)) {
 			game.nextTurn();
 		}
 		Result result;

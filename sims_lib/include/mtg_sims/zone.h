@@ -5,6 +5,7 @@
 #include <deque>
 #include <ostream>
 #include <random>
+#include <string>
 
 namespace MTGSims {
 
@@ -15,11 +16,12 @@ private:
 	CardList zone_counts_;
 	std::deque<Card> ordered_zone_;
 	std::default_random_engine engine_;
+	std::string name_;
 
 	void reseedRandom();
 
 public:
-	ZoneClass();
+	ZoneClass(const std::string& name);
 
 	// Initialization stuff
 	void clear();
@@ -40,8 +42,5 @@ public:
 	bool contains(const Card& card) const;
 };
 
-enum Zone {Library, Hand, Graveyard, Exile};
-
-std::ostream& operator<<(std::ostream& out, const Zone& zone);
 
 }

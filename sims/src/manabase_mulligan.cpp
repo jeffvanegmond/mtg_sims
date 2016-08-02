@@ -19,10 +19,10 @@ public:
 	};
 
 	bool keepHand(Game& game) {
-		int num_red = game.zoneCount(Zone::Hand, red_source);
-		int num_other_land = game.zoneCount(Zone::Hand, other_land);
+		int num_red = game.hand.count(red_source);
+		int num_other_land = game.hand.count(other_land);
 		int num_land = num_red + num_other_land;
-		switch(game.zoneSize(Zone::Hand)) {
+		switch(game.hand.size()) {
 			case 7:
 			case 6:
 				return num_land > 1 && num_land < 5 && num_red > 0;
@@ -40,7 +40,7 @@ public:
 			game.mulligan();
 		}
 		Result r;
-		switch(game.zoneSize(Zone::Hand)) {
+		switch(game.hand.size()) {
 			case 7:
 				++r.keep_7;
 				break;

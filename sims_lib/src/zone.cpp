@@ -7,7 +7,7 @@
 
 namespace MTGSims {
 
-ZoneClass::ZoneClass() {
+ZoneClass::ZoneClass(const std::string& name) : name_(name) {
 	reseedRandom();
 }
 
@@ -19,7 +19,6 @@ void ZoneClass::reseedRandom() {
 void ZoneClass::clear() {
 	zone_counts_.clear();
 	ordered_zone_.clear();
-	//reseedRandom();
 }
 
 void ZoneClass::initialize(const CardList& initialize_with) {
