@@ -10,11 +10,6 @@ Game::Game(const Deck& deck) :
 	reset();
 }
 
-//Game::Game(Game& other_game) :
-//  deck_(other_game.deck_){
-//	reset();
-//}
-
 void Game::reset(size_t cards) {
 	library.initialize(deck_.getDecklist());
 	library.randomize();
