@@ -23,6 +23,7 @@ private:
 
 public:
 	Game(const Deck& deck);
+	Game(Game& other_game);
 	void reset(size_t cards = 7);
 
 	// Game actions

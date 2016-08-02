@@ -7,13 +7,16 @@ using namespace MTGSims;
 class ManabaseMull {
 public:
 	ManabaseMull(Card red_source, Card other_land) : red_source(red_source), other_land(other_land) {}
+	ManabaseMull(ManabaseMull& other) : red_source(other.red_source), other_land(other.other_land) {}
 	Card red_source;
 	Card other_land;
 
-	int keep_7 = 0;
-	int keep_6 = 0;
-	int keep_5 = 0;
-	int keep_4 = 0;
+	struct Result {
+		int keep_7 = 0;
+		int keep_6 = 0;
+		int keep_5 = 0;
+		int keep_4 = 0;
+	};
 
 	bool keepHand(Game& game) {
 		int num_red = game.zoneCount(Zone::Hand, red_source);
@@ -32,26 +35,36 @@ public:
 		return true;
 	}
 
-	void execute(Game& game) {
+	Result execute(Game& game) {
 		while(!keepHand(game)) {
 			game.mulligan();
 		}
+		Result r;
 		switch(game.zoneSize(Zone::Hand)) {
 			case 7:
-				++keep_7;
+				++r.keep_7;
 				break;
 			case 6:
-				++keep_6;
+				++r.keep_6;
 				break;
 			case 5:
-				++keep_5;
+				++r.keep_5;
 				break;
 			case 4:
 			default:
-				++keep_4;
+				++r.keep_4;
 		}
+		return r;
 	}
 };
+
+ManabaseMull::Result& operator+=(ManabaseMull::Result& lhs, const ManabaseMull::Result& rhs) {
+	lhs.keep_4 += rhs.keep_4;
+	lhs.keep_5 += rhs.keep_5;
+	lhs.keep_6 += rhs.keep_6;
+	lhs.keep_7 += rhs.keep_7;
+	return lhs;
+}
 
 int main(int argc, char** argv) {
 	Deck deck{"Manabase checkup"};
@@ -66,12 +79,12 @@ int main(int argc, char** argv) {
 
 		size_t num_sims = 100000;
 		Simulation sim{num_sims, deck};
-		sim.simulate<ManabaseMull>(manabase_mull);
+		ManabaseMull::Result res = sim.simulate<ManabaseMull, ManabaseMull::Result>(manabase_mull);
 
-		std::cout << "Seven cards kept: " << manabase_mull.keep_7 << "\t(" << double(manabase_mull.keep_7) / num_sims << "%)\n";
-		std::cout << "Six cards kept:   " << manabase_mull.keep_6 << "\t(" << double(manabase_mull.keep_6) / num_sims << "%)\n";
-		std::cout << "Five cards kept:  " << manabase_mull.keep_5 << "\t(" << double(manabase_mull.keep_5) / num_sims << "%)\n";
-		std::cout << "Four cards kept:  " << manabase_mull.keep_4 << "\t(" << double(manabase_mull.keep_4) / num_sims << "%)\n";
+		std::cout << "Seven cards kept: " << res.keep_7 << "\t(" << double(res.keep_7) / num_sims << "%)\n";
+		std::cout << "Six cards kept:   " << res.keep_6 << "\t(" << double(res.keep_6) / num_sims << "%)\n";
+		std::cout << "Five cards kept:  " << res.keep_5 << "\t(" << double(res.keep_5) / num_sims << "%)\n";
+		std::cout << "Four cards kept:  " << res.keep_4 << "\t(" << double(res.keep_4) / num_sims << "%)\n";
 	}
 
 	return 0;
