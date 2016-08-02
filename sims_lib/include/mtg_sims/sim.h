@@ -36,7 +36,7 @@ public:
 	}
 
 	template<typename T, typename R>
-	R simulateParallel(T& behavior, bool show_deck = true) {
+	R simulateParallel(T behavior, bool show_deck = true) {
 		#if defined(_OPENMP)
 		std::cout << "Parallel simulation starting with " << iterations_ << " iterations.\n";
 		std::cout << "Number of threads available: " << omp_get_max_threads() << "\n";
@@ -53,7 +53,7 @@ public:
 		Timer timer;
 		Game game{deck_};
 		R end_result;
-		#pragma omp parallel for firstprivate(game)
+		#pragma omp parallel for firstprivate(behavior, game)
 		for(size_t i = 0; i < iterations_; ++i) {
 			game.reset();
 			#pragma omp critical
