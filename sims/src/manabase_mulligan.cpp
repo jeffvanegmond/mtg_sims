@@ -81,10 +81,10 @@ int main(int argc, char** argv) {
 		Simulation sim{num_sims, deck};
 		ManabaseMull::Result res = sim.simulateParallel<ManabaseMull, ManabaseMull::Result>(manabase_mull);
 
-		std::cout << "Seven cards kept: " << res.keep_7 << "\t(" << double(res.keep_7) / num_sims << "%)\n";
-		std::cout << "Six cards kept:   " << res.keep_6 << "\t(" << double(res.keep_6) / num_sims << "%)\n";
-		std::cout << "Five cards kept:  " << res.keep_5 << "\t(" << double(res.keep_5) / num_sims << "%)\n";
-		std::cout << "Four cards kept:  " << res.keep_4 << "\t(" << double(res.keep_4) / num_sims << "%)\n";
+		std::cout << "Seven cards kept: " << res.keep_7 << "\t(" << 100.0 * double(res.keep_7) / num_sims << "%)\n";
+		std::cout << "Six cards kept:   " << res.keep_6 << "\t(" << 100.0 * double(res.keep_6) / num_sims << "%)\n";
+		std::cout << "Five cards kept:  " << res.keep_5 << "\t(" << 100.0 * double(res.keep_5) / num_sims << "%)\n";
+		std::cout << "Four cards kept:  " << res.keep_4 << "\t(" << 100.0 * double(res.keep_4) / num_sims << "%)\n";
 	}
 
 	return 0;
