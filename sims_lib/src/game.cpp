@@ -17,6 +17,7 @@ void Game::reset(size_t cards) {
 	hand.clear();
 	graveyard.clear();
 	exile.clear();
+	battlefield.clear();
 
 	for(size_t i = 0; i < cards; ++i) {
 		drawCard();

@@ -62,6 +62,16 @@ public:
 		std::cout << "Simulation is done and took " << timer.elapsed() << " seconds." << std::endl;
 		return end_result;
 	}
+
+	template<typename T>
+	typename T::Result simulate(T& behavior, bool show_deck = true) {
+		return simulate<T,typename T::Result>(behavior, show_deck);
+	}
+
+	template<typename T>
+	typename T::Result simulateParallel(T behavior, bool show_deck = true) {
+		return simulateParallel<T, typename T::Result>(behavior, show_deck);
+	}
 };
 
 }

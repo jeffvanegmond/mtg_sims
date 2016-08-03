@@ -15,6 +15,7 @@ private:
 
 public:
 	Card(std::string name);
+	Card() : Card("Nameless card") {}
 	size_t getId() const;
 	friend std::ostream& operator<<(std::ostream& out, const Card& card);
 	friend bool operator==(const Card& lhs, const Card& rhs);

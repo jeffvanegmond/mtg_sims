@@ -99,7 +99,7 @@ size_t ZoneClass::count(const Card& card) const {
 }
 
 bool ZoneClass::contains(const Card& card) const {
-	return zone_counts_.find(card) != zone_counts_.end();
+	return zone_counts_.find(card) != zone_counts_.end() && zone_counts_.at(card) > 0;
 }
 
 
