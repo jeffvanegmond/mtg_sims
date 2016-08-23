@@ -8,3 +8,6 @@ target_link_libraries(manabase_mulligan mtg_sims)
 
 add_executable(lupine_prototype src/lupine_prototype.cpp)
 target_link_libraries(lupine_prototype mtg_sims)
+
+add_executable(burn_fetch src/burn_fetch.cpp)
+target_link_libraries(burn_fetch mtg_sims)
