@@ -12,6 +12,7 @@ public:
 		int turns = 0;
 
 		// Vars used for variance calculations
+		std::vector<int> distribution;
 		int samples = 0;
 		double mean = 0;
 		double M2 = 0;
@@ -32,11 +33,6 @@ public:
 
 	Result execute(Game& game) {
 		int lands = landsInHand(game);
-//		std::cout << "My hand has " << game.hand.size() << " cards:" << std::endl;
-//		std::cout << "Mountain: " << game.hand.count(mountain) << std::endl;
-//		std::cout << "Fetch: " << game.hand.count(fetch) << std::endl;
-//		std::cout << "Guide: " << game.hand.count(guide) << std::endl;
-//		std::cout << "Bolt: " << game.hand.count(bolt) << std::endl;
 		if(lands < 1 || lands > 3) {
 			game.mulligan();
 			lands = landsInHand(game);
@@ -48,7 +44,6 @@ public:
 				}
 			}
 		}
-//		std::cout << "I mulliganed to " << game.hand.size() << " cards.\n";
 
 		int life = 20;
 		int mana = 0;
@@ -66,18 +61,14 @@ public:
 				game.library.takeFirst(mountain);
 				game.library.randomize();
 				game.battlefield.putCardOnTop(mountain);
-//				std::cout << "Played a fetchland\n";
 			} else if(game.hand.count(mountain) > 0) {
 				game.hand.takeFirst(mountain);
 				game.battlefield.putCardOnTop(mountain);
-//				std::cout << "Played a mountain\n";
 			}
 
 			mana = game.battlefield.count(mountain);
 			bolts = game.hand.count(bolt);
 			guides = game.hand.count(guide);
-
-//			std::cout << "I have " << mana << " mana available. I have " << bolts << " bolts and " << guides << " guides in hand.\n";
 
 			damage_available = game.battlefield.count(guide) * 2;
 			castable_bolts = std::min<int>(mana, bolts);
@@ -107,7 +98,6 @@ public:
 				--mana;
 				life -= 3;
 			}
-//			std::cout << "Ended turn " << game.getTurn() << " with my opponent on " << life << " life." << std::endl;
 			game.nextTurn();
 		}
 
@@ -127,6 +117,11 @@ Burn::Result& operator+=(Burn::Result& lhs, const Burn::Result& rhs) {
 	lhs.M2 += delta * (rhs.turns - lhs.mean);
 	if(lhs.samples > 1)
 		lhs.variance = lhs.M2 / (lhs.samples -1);
+
+	if(lhs.distribution.size() <= rhs.turns + 1) {
+		lhs.distribution.resize(rhs.turns + 1, 0);
+	}
+	lhs.distribution.at(rhs.turns) += 1;
 
 	return lhs;
 }
@@ -158,7 +153,19 @@ int main(int argc, char** argv) {
 	int mountains = min_mountains;
 	for(Burn::Result& res : results) {
 		std::cout << "M: " << mountains << "\tF: " << total_land - mountains << "\tTurn: " << double(res.turns)/double(num_sims)
-			<< "\tstd: " << std::sqrt(res.variance) << "\tn: " << res.samples << std::endl;
+			<< "\tstd: " << std::sqrt(res.variance) << "\tn: " << res.samples;
+		for(size_t i = 0; i < std::min<size_t>(7,res.distribution.size()); ++i) {
+			if(res.distribution.at(i) != 0) {
+				std::cout << "\tt" << i << ": " << res.distribution.at(i) / double(res.samples) * 100.0 << "%";
+			}
+		}
+		int rest = 0;
+		for(size_t i = 7; i < res.distribution.size(); ++i) {
+			rest += res.distribution.at(i);
+		}
+		std::cout << "\tt7+: " << rest / double(res.samples) * 100.0 << "%";
+
+		std::cout << std::endl;
 		++mountains;
 	}
 	return 0;
