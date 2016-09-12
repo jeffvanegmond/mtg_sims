@@ -11,3 +11,6 @@ target_link_libraries(lupine_prototype mtg_sims)
 
 add_executable(burn_fetch src/burn_fetch.cpp)
 target_link_libraries(burn_fetch mtg_sims)
+
+add_executable(combustible_gearhulk src/combustible_gearhulk.cpp)
+target_link_libraries(combustible_gearhulk mtg_sims)
