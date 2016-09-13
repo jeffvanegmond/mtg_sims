@@ -113,7 +113,7 @@ int main(int argc, char** argv) {
 	size_t num_sims = 1000000;
 	Gearhulk gearhulk_sim{land, gearhulk, cmcs};
 	Simulation sim{num_sims, deck};
-	Gearhulk::Result res = sim.simulateParallel<Gearhulk, Gearhulk::Result>(gearhulk_sim);
+	Gearhulk::Result res = sim.simulateParallel<Gearhulk>(gearhulk_sim);
 
 	std::cout << "On average, this deck deals " << ((double) res.damage / (double) num_sims) << " damage with a Combustible Gearhulk" << std::endl;
 
@@ -135,7 +135,7 @@ int main(int argc, char** argv) {
 
 	Gearhulk gearhulk_sim2{land, gearhulk, cmcs};
 	Simulation sim2{num_sims, deck2};
-	res = sim2.simulateParallel<Gearhulk, Gearhulk::Result>(gearhulk_sim2);
+	res = sim2.simulateParallel<Gearhulk>(gearhulk_sim2);
 
 	std::cout << "On average, this deck deals " << ((double) res.damage / (double) num_sims) << " damage with a Combustible Gearhulk" << std::endl;
 
