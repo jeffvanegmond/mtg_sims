@@ -19,7 +19,7 @@ size_t Card::getId() const {
 }
 
 std::ostream& operator<<(std::ostream& out, const Card& card) {
-	return out << card.name_ << " (" << card.id_ << ")";
+	return out << card.name_;
 }
 
 bool operator==(const Card& lhs, const Card& rhs) {
