@@ -50,7 +50,7 @@ Card ZoneClass::takeBottomCard() {
 }
 
 bool ZoneClass::takeFirst(const Card& card) {
-	for(std::deque<Card>::const_iterator it = ordered_zone_.begin(); it != ordered_zone_.end(); ++it) {
+	for(std::deque<Card>::iterator it = ordered_zone_.begin(); it != ordered_zone_.end(); ++it) {
 		if(*it == card) {
 			ordered_zone_.erase(it);
 			zone_counts_[card] -= 1;
@@ -61,7 +61,7 @@ bool ZoneClass::takeFirst(const Card& card) {
 }
 
 bool ZoneClass::takeLast(const Card& card) {
-	for(std::deque<Card>::const_reverse_iterator it = ordered_zone_.rbegin(); it != ordered_zone_.rend(); ++it) {
+	for(std::deque<Card>::reverse_iterator it = ordered_zone_.rbegin(); it != ordered_zone_.rend(); ++it) {
 		if(*it == card) {
 			ordered_zone_.erase((it+1).base());
 			zone_counts_[card] -= 1;
