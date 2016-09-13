@@ -86,15 +86,19 @@ Gearhulk::Result& operator+=(Gearhulk::Result& lhs, const Gearhulk::Result& rhs)
 }
 
 int main(int argc, char** argv) {
-	Deck deck{"Standard Combustible Gearhulk"};
-	Card land       = deck.addCard("Land", 26);
+	// Decklist 1:
+	// http://www.bazaarofmagic.nl/deck/rb-combustible-gearhulk-di-27529.html
+
+	Deck deck{"Standard Rb Combustible Gearhulk"};
+	Card land       = deck.addCard("Land", 25);
 	Card gearhulk   = deck.addCard("Combustible Gearhulk", 4);
-	Card one_drop   = deck.addCard("1-drop", 4);
-	Card two_drop   = deck.addCard("2-drop", 6);
-	Card three_drop = deck.addCard("3-drop", 9);
-	Card four_drop  = deck.addCard("4-drop", 6);
-	Card five_drop  = deck.addCard("5-drop", 4);
-	Card six_drop   = deck.addCard("6-drop", 1);
+	Card one_drop   = deck.addCard("1-drop", 0);
+	Card two_drop   = deck.addCard("2-drop", 12);
+	Card three_drop = deck.addCard("3-drop", 10);
+	Card four_drop  = deck.addCard("4-drop", 3);
+	Card five_drop  = deck.addCard("5-drop", 3);
+	Card six_drop   = deck.addCard("6-drop", 0);
+	Card eight_drop = deck.addCard("8-drop", 3);
 	std::map<Card, int> cmcs;
 	cmcs[land] = 0;
 	cmcs[gearhulk] = 6;
@@ -104,11 +108,34 @@ int main(int argc, char** argv) {
 	cmcs[four_drop] = 4;
 	cmcs[five_drop] = 5;
 	cmcs[six_drop] = 6;
+	cmcs[eight_drop] = 8;
 
 	size_t num_sims = 1000000;
 	Gearhulk gearhulk_sim{land, gearhulk, cmcs};
 	Simulation sim{num_sims, deck};
 	Gearhulk::Result res = sim.simulateParallel<Gearhulk, Gearhulk::Result>(gearhulk_sim);
+
+	std::cout << "On average, this deck deals " << ((double) res.damage / (double) num_sims) << " damage with a Combustible Gearhulk" << std::endl;
+
+	for(size_t i = 0; i < res.distribution.size(); ++i) {
+		std::cout << i << " damage:\t" << res.distribution.at(i) << "(" << 100.0 * (double) res.distribution.at(i) / (double) num_sims << "%)" << std::endl;
+	}
+
+	// Decklist 2:
+	// http://www.bazaarofmagic.nl/deck/eldrazi-gearhulk-di-27527.html
+
+	Deck deck2{"Standard Eldrazi Combustible Gearhulk"};
+	land       = deck2.addCard("Land", 26);
+	gearhulk   = deck2.addCard("Combustible Gearhulk", 4);
+	one_drop   = deck2.addCard("1-drop", 4);
+	two_drop   = deck2.addCard("2-drop", 10);
+	three_drop = deck2.addCard("3-drop", 6);
+	four_drop  = deck2.addCard("4-drop", 6);
+	five_drop  = deck2.addCard("5-drop", 4);
+
+	Gearhulk gearhulk_sim2{land, gearhulk, cmcs};
+	Simulation sim2{num_sims, deck2};
+	res = sim2.simulateParallel<Gearhulk, Gearhulk::Result>(gearhulk_sim2);
 
 	std::cout << "On average, this deck deals " << ((double) res.damage / (double) num_sims) << " damage with a Combustible Gearhulk" << std::endl;
 
