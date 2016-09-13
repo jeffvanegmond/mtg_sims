@@ -116,9 +116,12 @@ int main(int argc, char** argv) {
 	Gearhulk::Result res = sim.simulateParallel<Gearhulk>(gearhulk_sim);
 
 	std::cout << "On average, this deck deals " << ((double) res.damage / (double) num_sims) << " damage with a Combustible Gearhulk" << std::endl;
-
+	double cumulative = 0.;
+	double percentage = 0.;
 	for(size_t i = 0; i < res.distribution.size(); ++i) {
-		std::cout << i << " damage:\t" << res.distribution.at(i) << "(" << 100.0 * (double) res.distribution.at(i) / (double) num_sims << "%)" << std::endl;
+		percentage = (double)res.distribution.at(i) / (double) num_sims * 100.0;
+		cumulative += percentage;
+		std::cout << i << " damage:\t" << res.distribution.at(i) << "\t(" << percentage << "%,\t" << cumulative << "%)" << std::endl;
 	}
 
 	// Decklist 2:
@@ -139,8 +142,11 @@ int main(int argc, char** argv) {
 
 	std::cout << "On average, this deck deals " << ((double) res.damage / (double) num_sims) << " damage with a Combustible Gearhulk" << std::endl;
 
+	cumulative = 0.;
 	for(size_t i = 0; i < res.distribution.size(); ++i) {
-		std::cout << i << " damage:\t" << res.distribution.at(i) << "(" << 100.0 * (double) res.distribution.at(i) / (double) num_sims << "%)" << std::endl;
+		percentage = (double)res.distribution.at(i) / (double) num_sims * 100.0;
+		cumulative += percentage;
+		std::cout << i << " damage:\t" << res.distribution.at(i) << "\t(" << percentage << "%,\t" << cumulative << "%)" << std::endl;
 	}
 
 	return 0;
