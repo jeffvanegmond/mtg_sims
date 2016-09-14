@@ -128,11 +128,11 @@ int main(int argc, char** argv) {
 	// http://www.bazaarofmagic.nl/deck/eldrazi-gearhulk-di-27527.html
 
 	Deck deck2{"Standard Eldrazi Combustible Gearhulk"};
-	land       = deck2.addCard("Land", 26);
+	land       = deck2.addCard("Land", 25);
 	gearhulk   = deck2.addCard("Combustible Gearhulk", 4);
 	one_drop   = deck2.addCard("1-drop", 4);
 	two_drop   = deck2.addCard("2-drop", 10);
-	three_drop = deck2.addCard("3-drop", 6);
+	three_drop = deck2.addCard("3-drop", 7);
 	four_drop  = deck2.addCard("4-drop", 6);
 	five_drop  = deck2.addCard("5-drop", 4);
 
