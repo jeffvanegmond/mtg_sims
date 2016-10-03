@@ -62,8 +62,10 @@ public:
 
 			if(game.hand.count(gearhulk) > 0) {
 				for(int i = 0; i < 3; ++i) {
-					Card revealed_card = game.library.takeTopCard();
-					result.damage += cmcs[revealed_card];
+					if(game.library.size() > 0) {
+						Card revealed_card = game.library.takeTopCard();
+						result.damage += cmcs[revealed_card];
+					}
 				}
 				break;
 			}
@@ -114,6 +116,10 @@ int main(int argc, char** argv) {
 	Card five_drop  = deck.addCard("5-drop", 3);
 	Card six_drop   = deck.addCard("6-drop", 0);
 	Card eight_drop = deck.addCard("8-drop", 3);
+	Card ten_drop      = deck.addCard("10-drop", 0);
+	Card eleven_drop   = deck.addCard("11-drop", 0);
+	Card thirteen_drop = deck.addCard("13-drop", 0);
+
 	std::map<Card, int> cmcs;
 	cmcs[land] = 0;
 	cmcs[gearhulk] = 6;
@@ -124,6 +130,9 @@ int main(int argc, char** argv) {
 	cmcs[five_drop] = 5;
 	cmcs[six_drop] = 6;
 	cmcs[eight_drop] = 8;
+	cmcs[ten_drop] = 10;
+	cmcs[eleven_drop] = 11;
+	cmcs[thirteen_drop] = 13;
 
 	size_t num_sims = 1000000;
 	Gearhulk gearhulk_sim{land, gearhulk, cmcs};
@@ -148,6 +157,29 @@ int main(int argc, char** argv) {
 	res = sim2.simulateParallel<Gearhulk>(gearhulk_sim2);
 	output(res, num_sims);
 
+	// Decklist 3:
+	// http://www.channelfireball.com/articles/return-of-the-titans-combustible-gearhulk/
+	// This is what I call "going deep". I added 2 cards because the list was incomplete!
+
+	Deck deck3{"Standard UR Combustible Gearhulk"};
+	land          = deck3.addCard("Land", 24);
+	gearhulk      = deck3.addCard("Combustible Gearhulk", 3);
+	two_drop      = deck3.addCard("2-drop", 10);
+	three_drop    = deck3.addCard("3-drop", 10);
+	four_drop     = deck3.addCard("4-drop", 4);
+	eight_drop    = deck3.addCard("8-drop", 2);
+	ten_drop      = deck3.addCard("10-drop", 2);
+	eleven_drop   = deck3.addCard("11-drop", 4);
+	thirteen_drop = deck3.addCard("13-drop", 1);
+
+	Gearhulk gearhulk_sim3{land, gearhulk, cmcs};
+	Simulation sim3{num_sims, deck3};
+	res = sim3.simulateParallel<Gearhulk>(gearhulk_sim2);
+	output(res, num_sims);
+
+	std::cout << "cmcs[ten_drop] = " << cmcs[ten_drop] << std::endl;
+	std::cout << "cmcs[eleven_drop] = " << cmcs[eleven_drop] << std::endl;
+	std::cout << "cmcs[thirteen_drop] = " << cmcs[thirteen_drop] << std::endl;
 
 	return 0;
 }
